@@ -71,9 +71,6 @@ namespace shaiya
     struct SkillAbilityEx
     {
         SkillAbility70 type70;
-        UINT32 type73Percentage;
-        UINT32 type74Percentage;
-        UINT32 type78Percentage;
         UINT32 type87QuestExpRate;
     };
     #pragma pack(pop)
@@ -719,5 +716,5 @@ namespace shaiya
     #pragma pack(pop)
 
     //static_assert(sizeof(CUser) == 0x62A0);
-    static_assert(sizeof(CUser) == 0x630C);
+    static_assert(sizeof(CUser) == 0x6300);
 }
