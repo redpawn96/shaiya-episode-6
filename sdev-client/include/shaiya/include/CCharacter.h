@@ -143,7 +143,7 @@ namespace shaiya
         Family family;                //0x2B8
         Grow grow;                    //0x2B9
         PAD(10);
-        BOOL visible;                 //0x2C4
+        BOOL isTransparent;           //0x2C4
         PAD(12);
         bool isAdmin;                 //0x2D4
         PAD(23);
@@ -182,7 +182,7 @@ namespace shaiya
 
         static void ClearEffects(CCharacter* user);
         static void RemoveEffect(CCharacter* user, int effectDataId, int effectSubId);
-        static void RenderEffect(CCharacter* user, int effectDataId, int effectSubId, float delay, D3DVECTOR* pos, D3DVECTOR* dir, D3DVECTOR* up, int unknown);
+        static void RenderEffect(CCharacter* user, int effectDataId, int effectSubId, float delay, D3DVECTOR* pos, D3DVECTOR* dir, D3DVECTOR* up, int unknown/*0:9*/);
     };
     #pragma pack(pop)
 
