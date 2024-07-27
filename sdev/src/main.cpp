@@ -83,6 +83,7 @@ void init_custom_memory(CUser* user)
     user->skillAbility.type70.skillLv = 0;
     user->skillAbility.type70.triggered = false;
     user->skillAbility.type70.keepTick = 0;
+    user->skillAbility.type87QuestExpRate = 0;
 #endif
 }
 
