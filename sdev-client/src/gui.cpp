@@ -1,5 +1,7 @@
 #include <array>
 #include <format>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <util/util.h>
 #include "include/main.h"
 
@@ -120,6 +122,38 @@ void __declspec(naked) naked_0x41E2BB()
     }
 }
 
+unsigned u0x528D96 = 0x528D96;
+void __declspec(naked) naked_0x528D8D()
+{
+    __asm
+    {
+        pushad
+
+        push 0x11 // VK_CONTROL
+        call GetAsyncKeyState
+        shr ax, 0xF
+        cmp ax, 0x1
+
+        popad
+
+        jne original
+
+        cmp ecx, 0xA
+        jl original
+
+        sub ecx, 0xA // x10
+        mov dword ptr ds : [esi + 0x4C] , ecx
+        add word ptr ds : [esi + eax * 0x2 + 0x40] , 0xA
+        jmp u0x528D96
+
+        original :
+        dec ecx // x1
+            mov dword ptr ds : [esi + 0x4C] , ecx
+            inc word ptr ds : [esi + eax * 0x2 + 0x40]
+            jmp u0x528D96
+    }
+}
+
 void hook::gui()
 {
     // chat color bug workaround
@@ -134,6 +168,8 @@ void hook::gui()
     util::detour((void*)0x41F9C0, naked_0x41F9C0, 9);
     // evolution bug
     util::detour((void*)0x41E2BB, naked_0x41E2BB, 7);
+    // apply stats x10
+    util::detour((void*)0x528D8D, naked_0x528D8D, 9);
 
     // remove ep6 vehicle section (auction board)
     util::write_memory((void*)0x463FE0, 0x07, 1);

@@ -35,8 +35,12 @@ void Main()
     // CCharacter::CCharacter
     util::detour((void*)0x419E73, naked_0x419E73, 6);
 
+    //hook::costume_effect();
     hook::gui();
+    hook::item_icon();
+    hook::name_color();
     hook::packet();
+    hook::quick_slot();
     hook::title();
     hook::vehicle();
 

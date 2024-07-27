@@ -44,6 +44,13 @@ namespace shaiya
     using Address = unsigned;
     using Packet = unsigned char*;
 
+    using CharId = ULONG;
+    using UserId = ULONG;
+    using ItemId = UINT32;
+    using CraftName = std::array<char, 21>;
+    using Gems = std::array<UINT8, 6>;
+    using CloakBadge = Gems;
+
     enum EquipmentSlot
     {
         Helmet,      //0x1C0

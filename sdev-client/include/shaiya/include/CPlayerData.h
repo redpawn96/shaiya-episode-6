@@ -239,7 +239,8 @@ namespace shaiya
         Array<QuickSlot, 50> quickSlots;       //0x22AA818  0x199D648
         UINT8 quickSlot1Bag;                   //0x22AAB38  0x199D968
         UINT8 quickSlot2Bag;                   //0x22AAB39  0x199D969
-        PAD(2);
+        UINT8 quickSlot3Bag;                   //0x22AAB3A  0x199D96A
+        PAD(1);
         Array<QuickSlot, 24> revolver;         //0x22AAB3C  0x199D96C
         // 0x22AACBC  0x199DAEC
         PAD(20);

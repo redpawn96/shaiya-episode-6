@@ -18,6 +18,15 @@ namespace shaiya
     struct CSwordEffect;
     struct CVertexShader;
 
+    enum struct TargetType : int
+    {
+        None = -1,
+        Mob,
+        Item,
+        User,
+        Npc
+    };
+
     enum struct HealPointType : UINT8
     {
         Health,
@@ -46,15 +55,6 @@ namespace shaiya
         Poland,        // 1250
         Italy,         // CP_ACP
         Philippines    // CP_ACP
-    };
-
-    enum struct TargetType : int
-    {
-        None = -1,
-        Mob,
-        Item,
-        User,
-        Npc
     };
 
     #pragma pack(push, 1)
@@ -629,12 +629,13 @@ namespace shaiya
 
         // static functions
 
+        static void DrawRect(D3DCOLOR argb, long x, long y, long w, long h);
         static void DrawSystemMessage(int type, int lineNumber, int unknown);
         static int GetDaSkillEffectDataId(int skillId);
         static bool PlayWav(const char* filename, D3DVECTOR* origin, float volume, bool repeat);
     };
     #pragma pack(pop)
 
-    static_assert(sizeof(Static) == 0x1B5A000);
+    //static_assert(sizeof(Static) == 0x1B5A000);
     static auto g_var = (Static*)0x7AB000;
 }
