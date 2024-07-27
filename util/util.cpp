@@ -25,7 +25,7 @@ int util::detour(void* addr, void* func, int size)
     return VirtualProtect(addr, size, protect, &protect);
 }
 
-int util::write_memory(void* addr, void* buffer, int size)
+int util::read_memory(void* addr, void* dest, int size)
 {
     if (size < 1)
         return 0;
@@ -34,7 +34,22 @@ int util::write_memory(void* addr, void* buffer, int size)
     if (!VirtualProtect(addr, size, PAGE_EXECUTE_READWRITE, &protect))
         return 0;
 
-    if (!WriteProcessMemory(GetCurrentProcess(), addr, buffer, size, nullptr))
+    if (!ReadProcessMemory(GetCurrentProcess(), addr, dest, size, nullptr))
+        return 0;
+
+    return VirtualProtect(addr, size, protect, &protect);
+}
+
+int util::write_memory(void* addr, void* src, int size)
+{
+    if (size < 1)
+        return 0;
+
+    unsigned long protect;
+    if (!VirtualProtect(addr, size, PAGE_EXECUTE_READWRITE, &protect))
+        return 0;
+
+    if (!WriteProcessMemory(GetCurrentProcess(), addr, src, size, nullptr))
         return 0;
 
     return VirtualProtect(addr, size, protect, &protect);

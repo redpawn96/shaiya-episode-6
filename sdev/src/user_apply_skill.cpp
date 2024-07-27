@@ -105,66 +105,6 @@ namespace user_apply_skill
     {
         switch (abilityType)
         {
-        // skillId: 375
-        case SkillAbilityType::StrToMaxHealth:
-        {
-            auto value = user->strength * abilityValue;
-            user->maxHealth += value;
-
-            CUser::SendMaxHP(user);
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 376
-        case SkillAbilityType::RecToMaxHealth:
-        {
-            auto value = user->reaction * abilityValue;
-            user->maxHealth += value;
-
-            CUser::SendMaxHP(user);
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 377
-        case SkillAbilityType::IntToMaxHealth:
-        {
-            auto value = user->intelligence * abilityValue;
-            user->maxHealth += value;
-
-            CUser::SendMaxHP(user);
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 378
-        case SkillAbilityType::WisToMaxHealth:
-        {
-            auto value = user->wisdom * abilityValue;
-            user->maxHealth += value;
-
-            CUser::SendMaxHP(user);
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 379
-        case SkillAbilityType::DexToMaxHealth:
-        {
-            auto value = user->dexterity * abilityValue;
-            user->maxHealth += value;
-
-            CUser::SendMaxHP(user);
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 380
-        case SkillAbilityType::LucToMaxHealth:
-        {
-            auto value = user->luck * abilityValue;
-            user->maxHealth += value;
-
-            CUser::SendMaxHP(user);
-            CUser::SetAttack(user);
-            break;
-        }
         // skillId: 398, 399, 400, 401
         case SkillAbilityType::DecreaseHpByPercentage:
         {
@@ -173,57 +113,6 @@ namespace user_apply_skill
 
             user->health -= (user->health * abilityValue) / 100;
             CUser::SendRecoverChange(user, user->health, user->stamina, user->mana);
-            break;
-        }
-        // skillId: 396
-        case SkillAbilityType::AbilityAddDefensePercentage:
-        {
-            if (abilityValue < 0)
-            {
-                user->abilityAddDefense -= user->skillAbility.type73Percentage;
-                user->skillAbility.type73Percentage = 0;
-            }
-            else
-            {
-                user->skillAbility.type73Percentage = (user->defense * abilityValue) / 100;
-                user->abilityAddDefense += user->skillAbility.type73Percentage;
-            }
-
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 397
-        case SkillAbilityType::AbilityAddRangedDefensePercentage:
-        {
-            if (abilityValue < 0)
-            {
-                user->abilityAddRangedDefense -= user->skillAbility.type74Percentage;
-                user->skillAbility.type74Percentage = 0;
-            }
-            else
-            {
-                user->skillAbility.type74Percentage = (user->rangedDefense * abilityValue) / 100;
-                user->abilityAddRangedDefense += user->skillAbility.type74Percentage;
-            }
-
-            CUser::SetAttack(user);
-            break;
-        }
-        // skillId: 412
-        case SkillAbilityType::AbilityAddMagicResistancePercentage:
-        {
-            if (abilityValue < 0)
-            {
-                user->abilityAddMagicResistance -= user->skillAbility.type78Percentage;
-                user->skillAbility.type78Percentage = 0;
-            }
-            else
-            {
-                user->skillAbility.type78Percentage = (user->magicResistance * abilityValue) / 100;
-                user->abilityAddMagicResistance += user->skillAbility.type78Percentage;
-            }
-
-            CUser::SetAttack(user);
             break;
         }
         // itemId: 101112, 101113

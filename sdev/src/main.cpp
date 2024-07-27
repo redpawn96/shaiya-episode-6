@@ -83,10 +83,6 @@ void init_custom_memory(CUser* user)
     user->skillAbility.type70.skillLv = 0;
     user->skillAbility.type70.triggered = false;
     user->skillAbility.type70.keepTick = 0;
-
-    user->skillAbility.type73Percentage = 0;
-    user->skillAbility.type74Percentage = 0;
-    user->skillAbility.type78Percentage = 0;
     user->skillAbility.type87QuestExpRate = 0;
 #endif
 }
@@ -147,8 +143,8 @@ void Main()
     hook::packet_shop();
 
 #ifdef SHAIYA_EP6_4_PT
-    // change 0x62A0 to 0x630C
-    std::array<std::uint8_t, 2> a00{ 0x0C, 0x63 };
+    // change 0x62A0 to 0x6300
+    std::array<uint8_t, 2> a00{ 0x00, 0x63 };
     // SSyncHeap<CUser>::Alloc
     util::write_memory((void*)0x411F74, &a00, 2);
 

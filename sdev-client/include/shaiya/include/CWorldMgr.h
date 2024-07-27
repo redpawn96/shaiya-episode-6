@@ -12,7 +12,10 @@ namespace shaiya
     // 0x45A0F0 ctor
     struct CWorldMgr
     {
-        PAD(1310776);
+        PAD(1300868);               //0x7C4A68
+        // max: 10000
+        UINT32 effectRenderCount;   //0x9023EC  0x13D988
+        PAD(9904);
         CCharacter* user;           //0x904AA0  0x140038
         PAD(872);
         CTexture attribute0Image;   //0x904E0C  0x1403A4  mon_not_ex.tga
@@ -32,6 +35,7 @@ namespace shaiya
         static CCharacter* FindUser(ULONG id/*CUser->id*/);
         static CMonster* FindMob(ULONG id/*CMob->id*/);
         static CNpc* FindNpc(ULONG id/*CNpc->id*/);
+        static void RenderEffect(int effectDataId, int effectSubId, D3DVECTOR* pos, D3DVECTOR* dir, D3DVECTOR* up, int unknown/*0:9*/);
     };
     #pragma pack(pop)
 

@@ -223,6 +223,16 @@ The following skills are supported:
 
 | SkillId    | Ability    |
 |------------|------------|
+| 398        | 70         |
+| 399        | 70         |
+| 400        | 70         |
+| 401        | 70         |
+| 432        | 87         |
+
+The following skills are not supported:
+
+| SkillId    | Ability    |
+|------------|------------|
 | 375        | 52         |
 | 376        | 53         |
 | 377        | 54         |
@@ -232,15 +242,6 @@ The following skills are supported:
 | 396        | 73         |
 | 397        | 74         |
 | 412        | 78         |
-| 398        | 70         |
-| 399        | 70         |
-| 400        | 70         |
-| 401        | 70         |
-| 432        | 87         |
-
-### 375-380
-
-The library uses base stats; not ability stats. Relog when stats are applied (level up, reset, etc.).
 
 ## Chaotic Squares
 
