@@ -38,8 +38,14 @@ namespace packet_gem
     bool enable_perfect_enchant_step(CItem* lapisian, CItem* item)
     {
         constexpr int max_enchant_step = 20;
+        constexpr int armor_difference = 50;
 
         auto enchantStep = CItem::GetEnchantStep(item);
+        auto isWeapon = CItem::IsWeapon(item);
+
+        if (!isWeapon && enchantStep > armor_difference)
+            enchantStep -= armor_difference;
+
         if (enchantStep >= max_enchant_step)
             return false;
 
@@ -58,7 +64,7 @@ namespace packet_gem
         auto lapisianStep = lapisian->itemInfo->range;
         auto lapisianType = static_cast<uint8_t>(lapisian->itemInfo->country);
 
-        if (CItem::IsWeapon(item))
+        if (isWeapon)
         {
             // Weapon Lapisia +1
             if (enchantStep < 10 && lapisian->itemInfo->itemId == 95004)
