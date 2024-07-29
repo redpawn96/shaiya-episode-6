@@ -1,4 +1,5 @@
 #include <memory>
+#include <strsafe.h>
 #include <shaiya/include/common/SConnection.h>
 #include <shaiya/include/network/game/outgoing/0200.h>
 #include <shaiya/include/network/game/outgoing/0900.h>
@@ -56,7 +57,7 @@ namespace npc_quest
         GameLogQuestEndResultIncoming log{};
         CUser::SetGameLogMain(user, &log);
         log.questId = quest->questInfo->questId;
-        std::copy_n(quest->questInfo->questName.begin(), log.questName.size(), log.questName.begin());
+        StringCbCopyA(log.questName.data(), log.questName.size(), quest->questInfo->questName.data());
         log.success = true;
         log.gold = result.gold;
 
@@ -91,7 +92,12 @@ namespace npc_quest
             }
             else
             {
-                outgoing.itemList[i] = { 0,0,0,0,0 };
+                outgoing.itemList[i].count = 0;
+                outgoing.itemList[i].bag = 0;
+                outgoing.itemList[i].slot = 0;
+                outgoing.itemList[i].type = 0;
+                outgoing.itemList[i].typeId = 0;
+
                 log.itemId = 0;
                 log.itemCount = 0;
                 log.itemName[0] = '\0';

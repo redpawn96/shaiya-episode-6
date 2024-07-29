@@ -38,7 +38,32 @@ Cheat Engine isn't guaranteed to work for everyone. It's not an issue with the a
 
 ## Support
 
-Older versions of the software are not supported. Send bug reports via email. Do not send images or videos unless you are asked to do so. Please provide steps to reproduce the issue(s), or I may not respond.
+Older versions of the software are not supported. Report bugs via email when the issues tab is closed.
+
+## Issues
+
+Please provide a description and reproduction steps.
+
+### Template
+
+Description: 
+
+Explain the problem
+
+Reproduction steps:
+
+1. Enter the game and do something
+2. Do something else
+3. Do something else
+4. See the error
+
+Optional:
+
+Add images, links, etc.
+
+## Pull Requests
+
+Pull requests are not welcome. GitHub doesn't allow the pull requests tab to be disabled.
 
 # Documentation
 
