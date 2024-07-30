@@ -130,6 +130,8 @@ The **sdev** library is for the **game** service. Continue reading for more info
 
 ## Binaries
 
+### Server
+
 https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev/bin/v1
 
 | NpcQuest    | Max Level    |
@@ -147,6 +149,71 @@ https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev/bin/v3
 | NpcQuest    | Max Level    | Item Duration    |
 |-------------|--------------|------------------|
 | EP6         | 80           | No               |
+
+### Client
+
+https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev-client/bin
+
+The file is a 6.4 PT client from patch 182. The file was unpacked by a friend of mine. (thanks, Ye)
+
+#### Build Version
+
+`0x16021200`
+
+#### OEP
+
+`0x637C68`
+
+#### SData Specs
+
+| Name          | Format   |
+|---------------|----------|
+| Item          | EP6.4    |
+| Monster       | EP5      |
+| NpcQuest      | EP6      |
+| NpcSkill      | EP6      |
+| Skill         | EP6      |
+
+#### Chat Color Exploit
+
+```
+STATUS_STACK_BUFFER_OVERRUN encountered
+A breakpoint instruction (__debugbreak() statement or a similar call) was executed in game.exe.
+```
+
+I believe this blog post explains what happens:
+
+https://devblogs.microsoft.com/oldnewthing/20080404-00/?p=22863
+
+Increasing the stack allocation in two functions seems to be a good solution. I wouldn't call it a fix. I added 512 bytes to the following instructions:
+
+```
+0047DB76:
+sub esp,000005BC
+
+0047DB83:
+mov [esp+000005B8],eax
+
+0047E871:
+mov ecx,[esp+000005C4]
+```
+
+```
+0057C280:
+sub esp,0000054C
+
+0057C28D:
+mov [esp+00000548],eax
+
+0057C297:
+mov esi,[esp+0000055C]
+
+0057C9F9:
+mov ecx,[esp+00000558]
+
+0057CA0B:
+add esp,0000054C
+```
 
 ## Item Mall
 
