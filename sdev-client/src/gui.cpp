@@ -16,53 +16,6 @@ int get_weapon_step(uint8_t enchantStep)
     return g_weapon_step[enchantStep];
 }
 
-void format_chat_color_size(char* text)
-{
-    auto len = std::strlen(&text[8]);
-    auto str = std::format("{:03}", len);
-    std::memcpy(&text[2], str.data(), 3);
-}
-
-unsigned u0x57C56A = 0x57C56A;
-void __declspec(naked) naked_0x57C565()
-{
-    __asm
-    {
-        pushad
-
-        lea eax,[esi+edi]
-        push eax
-        call format_chat_color_size
-        add esp,0x4
-
-        popad
-
-        // original
-        mov dx,word ptr[esi+edi+0x2]
-        jmp u0x57C56A
-    }
-}
-
-unsigned u0x47E084 = 0x47E084;
-void __declspec(naked) naked_0x47E07F()
-{
-    __asm
-    {
-        pushad
-
-        lea eax,[edi+esi]
-        push eax
-        call format_chat_color_size
-        add esp,0x4
-
-        popad
-        
-        // original
-        mov cx,word ptr[edi+esi+0x2]
-        jmp u0x47E084
-    }
-}
-
 unsigned u0x4B8766 = 0x4B8766;
 void __declspec(naked) naked_0x4B8755()
 {
@@ -122,12 +75,6 @@ void __declspec(naked) naked_0x41E2BB()
 
 void hook::gui()
 {
-    // chat color bug workaround
-
-    // balloon
-    util::detour((void*)0x57C565, naked_0x57C565, 5);
-    // message box
-    util::detour((void*)0x47E07F, naked_0x47E07F, 5);
     // weapon enchant bug
     util::detour((void*)0x4B8755, naked_0x4B8755, 5);
     // dungeon wings shadow workaround
@@ -139,7 +86,7 @@ void hook::gui()
     util::write_memory((void*)0x463FE0, 0x07, 1);
     // speed recreation
     util::write_memory((void*)0x4C4D2F, 0x02, 1);
-    // speed enhance
+    // speed enchant
     util::write_memory((void*)0x501600, 0x02, 1);
     util::write_memory((void*)0x501602, 0x02, 1);
     util::write_memory((void*)0x501631, 0x02, 1);
