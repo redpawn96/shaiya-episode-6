@@ -211,29 +211,28 @@ namespace packet_gem
 
         CUser::ItemUseNSend(user, incoming->cubeBag, incoming->cubeSlot, false);
 
-        bool hasMaterials = false;
         for (int i = 0; i < requiredCount; ++i)
-            hasMaterials = Helpers::ItemRemove(user, itemInfo->itemId, 1);
-
-        if (hasMaterials)
         {
-            int bag = 1;
-            while (std::cmp_less_equal(bag, user->bagsUnlocked))
+            if (!Helpers::ItemRemove(user, itemInfo->itemId, 1))
+                return;
+        }
+
+        int bag = 1;
+        while (std::cmp_less_equal(bag, user->bagsUnlocked))
+        {
+            auto slot = Helpers::GetFreeItemSlot(user, bag);
+
+            if (slot != -1)
             {
-                auto slot = Helpers::GetFreeItemSlot(user, bag);
-
-                if (slot != -1)
-                {
-                    if (!CUser::ItemCreate(user, createInfo, 1))
-                        break;
-
-                    ItemLapisianCombineOutgoing outgoing(ItemLapisianCombineResult::Success, bag, slot, createInfo->type, createInfo->typeId, 1);
-                    SConnection::Send(&user->connection, &outgoing, sizeof(ItemLapisianCombineOutgoing));
+                if (!CUser::ItemCreate(user, createInfo, 1))
                     break;
-                }
 
-                ++bag;
+                ItemLapisianCombineOutgoing outgoing(ItemLapisianCombineResult::Success, bag, slot, createInfo->type, createInfo->typeId, 1);
+                SConnection::Send(&user->connection, &outgoing, sizeof(ItemLapisianCombineOutgoing));
+                break;
             }
+
+            ++bag;
         }
     }
 
@@ -670,9 +669,6 @@ namespace packet_gem
         if (square->itemInfo->effect != ItemEffect::ChaoticSquare)
             return;
 
-        if (incoming->money > user->money)
-            return;
-
         auto it = g_synthesis.find(square->itemInfo->itemId);
         if (it == g_synthesis.end())
             return;
@@ -681,13 +677,18 @@ namespace packet_gem
             return;
 
         auto& synthesis = it->second[incoming->index];
-        auto itemInfo = CGameData::GetItemInfo(synthesis.createType, synthesis.createTypeId);
-        if (!itemInfo)
+        auto createInfo = CGameData::GetItemInfo(synthesis.createType, synthesis.createTypeId);
+        if (!createInfo)
             return;
 
-        auto money = (incoming->money > max_gold_per_percentage) ? incoming->money : max_gold_per_percentage;
-        auto successRate = synthesis.successRate;
+        if (incoming->money > user->money)
+            return;
 
+        auto money = incoming->money;
+        if (money > max_gold_per_percentage)
+            money = max_gold_per_percentage;
+
+        auto successRate = synthesis.successRate;
         if (money >= gold_per_percentage && gold_per_percentage > 0)
             successRate += (money / gold_per_percentage) * 100;
 
@@ -728,22 +729,25 @@ namespace packet_gem
             std::as_const(synthesis.materialCount)
         );
 
-        bool hasMaterials = false;
+        ItemSynthesisOutgoing outgoing{};
+        outgoing.result = ItemSynthesisResult::Failure;
+
         for (const auto& [type, typeId, count] : materials)
         {
             auto itemInfo = CGameData::GetItemInfo(type, typeId);
             if (!itemInfo)
                 continue;
 
-            hasMaterials = Helpers::ItemRemove(user, itemInfo->itemId, count);
+            if (!Helpers::ItemRemove(user, itemInfo->itemId, count))
+            {
+                SConnection::Send(&user->connection, &outgoing, sizeof(ItemSynthesisOutgoing));
+                return;
+            }
         }
 
-        ItemSynthesisOutgoing outgoing{};
-        outgoing.result = ItemSynthesisResult::Failure;
-
-        if (hasMaterials && randomRate <= successRate)
+        if (randomRate <= successRate)
         {
-            if (CUser::ItemCreate(user, itemInfo, synthesis.createCount))
+            if (CUser::ItemCreate(user, createInfo, synthesis.createCount))
                 outgoing.result = ItemSynthesisResult::Success;
         }
 
