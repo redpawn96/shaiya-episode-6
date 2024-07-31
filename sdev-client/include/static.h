@@ -48,15 +48,6 @@ namespace shaiya
         Philippines    // CP_ACP
     };
 
-    enum struct TargetType : int
-    {
-        None = -1,
-        Mob,
-        Item,
-        User,
-        Npc
-    };
-
     #pragma pack(push, 1)
     // 00572D30 ctor
     struct Camera

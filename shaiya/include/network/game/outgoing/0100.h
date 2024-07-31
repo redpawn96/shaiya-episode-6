@@ -121,17 +121,40 @@ namespace shaiya
     #pragma pack(pop)
 
     #pragma pack(push, 1)
-    struct ServerTimeOutgoing
+    struct SystemTimeOutgoing
+    {
+        UINT16 opcode{ 0x114 };
+        ULONG time;
+
+        SystemTimeOutgoing() = default;
+
+        SystemTimeOutgoing(ULONG time)
+            : time(time)
+        {
+        }
+    };
+    #pragma pack(pop)
+
+    #pragma pack(push, 1)
+    struct ServerCmdTimeOutgoing
     {
         UINT16 opcode{ 0x115 };
         ULONG time;
 
-        ServerTimeOutgoing() = default;
+        ServerCmdTimeOutgoing() = default;
 
-        ServerTimeOutgoing(ULONG time)
+        ServerCmdTimeOutgoing(ULONG time)
             : time(time)
         {
         }
+    };
+    #pragma pack(pop)
+
+    #pragma pack(push, 1)
+    struct LapisianEnchantWeaponStepOutgoing
+    {
+        UINT16 opcode{ 0x116 };
+        Array<UINT16, 21> addValue;
     };
     #pragma pack(pop)
 
