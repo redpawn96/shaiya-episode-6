@@ -1,4 +1,5 @@
 #pragma once
+#include <strsafe.h>
 #include <shaiya/include/common.h>
 #include <shaiya/include/common/Country.h>
 #include <shaiya/include/common/Family.h>
@@ -11,7 +12,13 @@
 
 namespace shaiya
 {
+    enum struct CharNameChangeResult : UINT8
+    {
+        Success = 1,
+        Failure
+    };
     #pragma pack(push, 1)
+
     struct Equipment0101
     {
 #ifdef SHAIYA_EP6_4_PT
@@ -93,12 +100,12 @@ namespace shaiya
     struct CharacterNameChangeOutgoing
     {
         UINT16 opcode{ 0x10E };
-        bool success;
+        CharNameChangeResult result;
 
         CharacterNameChangeOutgoing() = default;
 
-        CharacterNameChangeOutgoing(bool success)
-            : success(success)
+        CharacterNameChangeOutgoing(CharNameChangeResult result)
+            : result(result)
         {
         }
     };
@@ -155,6 +162,23 @@ namespace shaiya
     {
         UINT16 opcode{ 0x116 };
         Array<UINT16, 21> addValue;
+    };
+    #pragma pack(pop)
+
+    #pragma pack(push, 1)
+    struct GuildCharNameOutgoing
+    {
+        UINT16 opcode{ 0x117 };
+        ULONG charId;
+        CharArray<21> charName;
+
+        GuildCharNameOutgoing() = default;
+
+        GuildCharNameOutgoing(ULONG charId,  const char* charName)
+            : charId(charId), charName{}
+        {
+            StringCbCopyA(this->charName.data(), this->charName.size(), charName);
+        }
     };
     #pragma pack(pop)
 

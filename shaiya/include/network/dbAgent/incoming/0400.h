@@ -7,6 +7,24 @@
 namespace shaiya
 {
     #pragma pack(push, 1)
+    struct DBAgentCharNameChangeIncoming
+    {
+        UINT16 opcode{ 0x409 };
+        ULONG userId;
+        ULONG charId;
+        CharArray<21> charName;
+
+        DBAgentCharNameChangeIncoming() = default;
+
+        DBAgentCharNameChangeIncoming(ULONG userId, ULONG charId, const char* charName)
+            : userId(userId), charId(charId), charName{}
+        {
+            StringCbCopyA(this->charName.data(), this->charName.size(), charName);
+        }
+    };
+    #pragma pack(pop)
+
+    #pragma pack(push, 1)
     struct DBAgentCharDeleteIncoming
     {
         UINT16 opcode{ 0x40A };
