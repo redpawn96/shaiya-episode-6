@@ -191,14 +191,7 @@ namespace packet_gem
         if (lapisianLv < 6 || lapisianLv > 19)
             return;
 
-        int requiredCount = 0;
-        if (lapisianLv >= 6 && lapisianLv <= 10)
-            requiredCount = 3;
-        else if (lapisianLv >= 11 && lapisianLv <= 15)
-            requiredCount = 4;
-        else if (lapisianLv >= 16 && lapisianLv <= 19)
-            requiredCount = 5;
-        
+        int requiredCount = itemInfo->reqLuc;
         if (!requiredCount)
             return;
 
