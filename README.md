@@ -134,27 +134,27 @@ The **sdev** library is for the **game** service. Continue reading for more info
 
 https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev/bin/v1
 
-| NpcQuest    | Max Level    |
-|-------------|--------------|
-| EP5         | 70           |
+| NpcQuest | Max Level |
+|----------|-----------|
+| EP5      | 70        |
 
 https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev/bin/v2
 
-| NpcQuest    | Max Level    | Item Duration    |
-|-------------|--------------|------------------|
-| EP6         | 80           | Yes              |
+| NpcQuest | Max Level | Item Duration      |
+|----------|-----------|--------------------|
+| EP6      | 80        | :white_check_mark: |
 
 https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev/bin/v3
 
-| NpcQuest    | Max Level    | Item Duration    |
-|-------------|--------------|------------------|
-| EP6         | 80           | No               |
+| NpcQuest | Max Level | Item Duration |
+|----------|-----------|---------------|
+| EP6      | 80        | :x:           |
 
 ### Client
 
 https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev-client/bin
 
-The file is a 6.4 PT client from patch 182. The file was unpacked by a friend of mine. (thanks, Ye)
+The file is a 6.4 PT client from patch 182. It was unpacked by a friend of mine. (thanks, Ye)
 
 #### Build Version
 
@@ -166,13 +166,13 @@ The file is a 6.4 PT client from patch 182. The file was unpacked by a friend of
 
 #### SData Specs
 
-| Name          | Format   |
-|---------------|----------|
-| Item          | EP6.4    |
-| Monster       | EP5      |
-| NpcQuest      | EP6      |
-| NpcSkill      | EP6      |
-| Skill         | EP6      |
+| Name     | Format |
+|----------|--------|
+| Item     | EP6.4  |
+| Monster  | EP5    |
+| NpcQuest | EP6    |
+| NpcSkill | EP6    |
+| Skill    | EP6    |
 
 #### Chat Color Exploit
 
@@ -215,6 +215,37 @@ mov ecx,[esp+00000558]
 add esp,0000054C
 ```
 
+#### Recovery
+
+There is not supposed to be `jmp` or `add` instructions in the 0x505 packet handler. Episode 6.4 (and greater) clients do not add the values.
+
+**0x16021200**
+
+```
+005942D8  MOV DWORD PTR DS:[EAX+158],ESI
+005942DE  MOV DWORD PTR DS:[EAX+160],EDX
+005942E4  MOV DWORD PTR DS:[EAX+168],ECX
+
+005942FB  MOV DWORD PTR DS:[914478],ESI
+00594301  MOV DWORD PTR DS:[91447C],EDX
+00594307  MOV DWORD PTR DS:[914480],ECX
+```
+
+
+**0x16012100**
+
+```
+00594AC8  MOV DWORD PTR DS:[EAX+158],ESI
+00594ACE  MOV DWORD PTR DS:[EAX+160],EDX
+00594AD4  MOV DWORD PTR DS:[EAX+168],ECX
+
+00594AEB  MOV DWORD PTR DS:[914478],ESI
+00594AF1  MOV DWORD PTR DS:[91447C],EDX
+00594AF7  MOV DWORD PTR DS:[914480],ECX
+```
+
+The game service library makes the recovery methods send the expected values to the client.
+
 ## Item Mall
 
 https://github.com/kurtekat/shaiya-episode-6/tree/main/sdev-db/bin
@@ -238,10 +269,10 @@ If you receive an error, change `ALTER` to `CREATE` and try again.
 
 The episode 6 format has 6 quest results, each containing up to 3 items. The following items are supported:
 
-| ItemId    | SkillId    | SkillLv    |
-|-----------|------------|------------|
-| 101112    | 432        | 2          |
-| 101113    | 432        | 3          |
+| ItemId | SkillId | SkillLv |
+|--------|---------|---------|
+| 101112 | 432     | 2       |
+| 101113 | 432     | 3       |
 
 The library will divide the ability value by 100. The exp value in the client result window comes from the data; not the packet. Please don't report it as a bug.
 
@@ -259,12 +290,12 @@ Warning: the **Items** script will create an empty table.
 
 The library expects the same day(s) to seconds conversion as the client.
 
-| Days  | Duration    |
-|-------|-------------|
-| 1     | 86400       |
-| 7     | 604800      |
-| 15    | 1296000     |
-| 30    | 2592000     |
+| Days | Duration |
+|------|----------|
+| 1    | 86400    |
+| 7    | 604800   |
+| 15   | 1296000  |
+| 30   | 2592000  |
 
 Items **will not** be removed from guild warehouses. Items **will not** be deleted without sending a notification to the client. The client does not copy dates to items in the bank or guild warehouse.
 
@@ -278,29 +309,29 @@ Items **will not** be removed from guild warehouses. Items **will not** be delet
 
 This feature will not be implemented.
 
-| Value  | Definition      |
-|--------|-----------------|
-| 0      | None            |
-| 1      | Unexpandable    |
-| 2      | Expandable      |
+| Value | Definition   |
+|-------|--------------|
+| 0     | None         |
+| 1     | Unexpandable |
+| 2     | Expandable   |
 
 ## Revenge Mark
 
 The kill count will determine which effect(s) will be rendered. The library will increment the kill count until 999.
 
-| KillCount         | EffectName                   | EffectDataId    |
-|-------------------|------------------------------|-----------------|
-| 1                 | RevengeMark_Loop_01.EFT      | 265             |     
-| 2                 | RevengeMark_Loop_02.EFT      | 266             |
-| 3                 | RevengeMark_Loop_03.EFT      | 267             |
-| 4                 | RevengeMark_Loop_04.EFT      | 268             |
-| 5                 | RevengeMark_Loop_05.EFT      | 269             |
-| 6                 | RevengeMark_Loop_06.EFT      | 270             |
-| 7                 | RevengeMark_Loop_07.EFT      | 271             |
-| 8-999             | RevengeMark_Loop_08.EFT      | 272             |
-| odd               | RevengeMark_Notice_01.EFT    | 262             |
-| even              | RevengeMark_Notice_02.EFT    | 263             |
-| 999               | RevengeMark_Notice_03.EFT    | 264             |
+| KillCount | EffectName                | EffectDataId |
+|-----------|---------------------------|--------------|
+| 1         | RevengeMark_Loop_01.EFT   | 265          |     
+| 2         | RevengeMark_Loop_02.EFT   | 266          |
+| 3         | RevengeMark_Loop_03.EFT   | 267          |
+| 4         | RevengeMark_Loop_04.EFT   | 268          |
+| 5         | RevengeMark_Loop_05.EFT   | 269          |
+| 6         | RevengeMark_Loop_06.EFT   | 270          |
+| 7         | RevengeMark_Loop_07.EFT   | 271          |
+| 8-999     | RevengeMark_Loop_08.EFT   | 272          |
+| odd       | RevengeMark_Notice_01.EFT | 262          |
+| even      | RevengeMark_Notice_02.EFT | 263          |
+| 999       | RevengeMark_Notice_03.EFT | 264          |
 
 The **sdev-client** library adds support for system message 509.
 
@@ -311,29 +342,22 @@ The **sdev-client** library adds support for system message 509.
 
 ## Skills
 
-The following skills are supported:
-
-| SkillId    | Ability    |
-|------------|------------|
-| 398        | 70         |
-| 399        | 70         |
-| 400        | 70         |
-| 401        | 70         |
-| 432        | 87         |
-
-The following skills are not supported:
-
-| SkillId    | Ability    |
-|------------|------------|
-| 375        | 52         |
-| 376        | 53         |
-| 377        | 54         |
-| 378        | 55         |
-| 379        | 56         |
-| 380        | 57         |
-| 396        | 73         |
-| 397        | 74         |
-| 412        | 78         |
+| SkillId | Ability | Supported          |
+|---------|---------|--------------------|
+| 375     | 52      | :x:                |
+| 376     | 53      | :x:                |
+| 377     | 54      | :x:                |
+| 378     | 55      | :x:                |
+| 379     | 56      | :x:                |
+| 380     | 57      | :x:                |
+| 398     | 70      | :white_check_mark: |
+| 399     | 70      | :white_check_mark: |
+| 400     | 70      | :white_check_mark: |
+| 401     | 70      | :white_check_mark: |
+| 396     | 73      | :x:                |
+| 397     | 74      | :x:                |
+| 412     | 78      | :x:                |
+| 432     | 87      | :white_check_mark: |
 
 ## Chaotic Squares
 
@@ -417,10 +441,10 @@ constexpr auto gold_per_percentage = 100'000'000;
 
 The **ReqVg** value is the success rate. The library will multiply the value by 100.
 
-| ItemId    | Effect    | ReqVg    |
-|-----------|-----------|----------|
-| 102074    | 102       | 5        |
-| 102075    | 102       | 10       |
+| ItemId | Effect | ReqVg |
+|--------|--------|-------|
+| 102074 | 102    | 5     |
+| 102075 | 102    | 10    |
 
 ### Free Combination
 
@@ -466,27 +490,27 @@ The values are signed 32-bit integers, expected to be in the following order:
 
 Use item `101150` to activate the window. The `CraftName` and `Gems` will be removed from the original item if the transfer is successful.
 
-| ItemId    | Effect    |
-|-----------|-----------|
-| 101150    | 105       |
+| ItemId | Effect |
+|--------|--------|
+| 101150 | 105    |
 
 ### Success Rate
 
 The base success rate is 30 percent.
 
-| ItemId    | Effect    | ReqVg    | Success Rate    |
-|-----------|-----------|----------|-----------------|
-| 101156    | 106       | 20       | 50              |
-| 101157    | 106       | 50       | 80              |
-| 101158    | 106       | 60       | 90              |
+| ItemId  | Effect | ReqVg | Success Rate |
+|---------|--------|-------|--------------|
+| 101156  | 106    | 20    | 50           |
+| 101157  | 106    | 50    | 80           |
+| 101158  | 106    | 60    | 90           |
 
 ### Clients
 
-| Version       | Locale       | Supported    |
-|---------------|--------------|--------------|
-| 0x16012100    | ES           | Yes          |
-| 0x16021200    | PT           | No           |
-| 0x16032100    | PT           | No           |
+| Version    | Locale | Patch     | Supported          |
+|------------|--------|-----------|--------------------|
+| 0x16012100 | ES     | ps0171    | :white_check_mark: |
+| 0x16021200 | PT     | ps0182    | :x:                |
+| 0x16032100 | PT     | ps0189    | :x:                |
 
 ## Perfect Lapisian Cube
 
@@ -494,10 +518,10 @@ Use item 101101 to activate the window. See system message 510 for more informat
 
 ## Safety Enchant Scroll
 
-| ItemId    | Effect    |
-|-----------|-----------|
-| 101090    | 103       |
-| 101132    | 103       |
+| ItemId | Effect |
+|--------|--------|
+| 101090 | 103    |
+| 101132 | 103    |
 
 ## Mailbox
 
