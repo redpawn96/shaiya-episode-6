@@ -512,9 +512,9 @@ The base success rate is 30 percent.
 | 0x16021200 | PT     | ps0182    | :x:                |
 | 0x16032100 | PT     | ps0189    | :x:                |
 
-## Perfect Lapisian Cube
+## Perfect Lapisian Combination
 
-Use item 101101 to activate the window. See system message 510 for more information.
+Use item `101101` to activate the window. The `ReqLuc` value is the number of lapisian required for combination. See system message `510` for more information.
 
 ## Safety Enchant Scroll
 
