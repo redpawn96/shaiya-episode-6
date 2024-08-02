@@ -13,6 +13,7 @@
 #include "include/shaiya/include/CUser.h"
 #include "include/shaiya/include/Helpers.h"
 #include "include/shaiya/include/ItemDuration.h"
+#include "include/shaiya/include/ItemEnchant.h"
 #include "include/shaiya/include/ItemInfo.h"
 #include "include/shaiya/include/ServerTime.h"
 using namespace shaiya;
@@ -92,6 +93,16 @@ namespace packet_character
 
         int length = outgoing.size_without_list() + (outgoing.itemCount * sizeof(Item0711));
         SConnection::Send(&user->connection, &outgoing, length);
+    }
+
+    void send_weapon_step_add_value(CUser* user)
+    {
+        LapisianEnchantWeaponStepOutgoing outgoing{};
+
+        for (int i = 0; std::cmp_less(i, outgoing.addValue.size()); ++i)
+            outgoing.addValue[i] = g_LapisianEnchantAddValue->step[i].weapon;
+
+        SConnection::Send(&user->connection, &outgoing, sizeof(LapisianEnchantWeaponStepOutgoing));
     }
 
     void send_character(CUser* user, Character0403* dbCharacter)
@@ -217,6 +228,26 @@ void __declspec(naked) naked_0x47B3E7()
     }
 }
 
+unsigned u0x4920F0 = 0x4920F0;
+unsigned u0x47BCED = 0x47BCED;
+void __declspec(naked) naked_0x47BCE8()
+{
+    __asm
+    {
+        call u0x4920F0
+
+        pushad
+
+        push ebp
+        call packet_character::send_weapon_step_add_value
+        add esp,0x4
+
+        popad
+
+        jmp u0x47BCED
+    }
+}
+
 void hook::packet_character()
 {
     // CUser::PacketCharacter switch
@@ -225,8 +256,10 @@ void hook::packet_character()
     util::detour((void*)0x492660, naked_0x492660, 6);
     // CUser::PacketUserDBChar case 0x403
     util::detour((void*)0x47B8FB, naked_0x47B8FB, 6);
-    // CUser::PacketUserDBChar
+    // CUser::PacketUserDBChar switch
     util::detour((void*)0x47B3E7, naked_0x47B3E7, 5);
+    // CUser::PacketUserDBChar case 0x407
+    util::detour((void*)0x47BCE8, naked_0x47BCE8, 5);
 
     // CUser::PacketUserDBChar
     util::write_memory((void*)0x47B4EC, sizeof(Character0403), 1);

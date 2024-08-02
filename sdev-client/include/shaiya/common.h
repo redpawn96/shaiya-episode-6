@@ -33,4 +33,12 @@ namespace shaiya
         UINT16 vertexIndex3;
     };
     #pragma pack(pop)
+
+    enum struct TargetType : UINT32
+    {
+        Mob,
+        Item,
+        User,
+        Npc
+    };
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <strsafe.h>
 #include <shaiya/include/common.h>
 #include <shaiya/include/common/Family.h>
 #include <shaiya/include/common/Grow.h>
@@ -90,6 +91,27 @@ namespace shaiya
         DBAgentCharCreateResultOutgoing(ULONG userId, DBAgentCharCreateResult result)
             : userId(userId), result(result)
         {
+        }
+    };
+    #pragma pack(pop)
+
+    #pragma pack(push, 1)
+    struct DBAgentCharNameChangeOutgoing
+    {
+        UINT16 opcode{ 0x409 };
+        ULONG userId;
+        bool success;
+        ULONG charId;
+        CharArray<21> oldCharName;
+        CharArray<21> newCharName;
+
+        DBAgentCharNameChangeOutgoing() = default;
+
+        DBAgentCharNameChangeOutgoing(ULONG userId, bool success, ULONG charId, const char* oldCharName, const char* newCharName)
+            : userId(userId), success(success), charId(charId), oldCharName{}, newCharName{}
+        {
+            StringCbCopyA(this->oldCharName.data(), this->oldCharName.size(), oldCharName);
+            StringCbCopyA(this->newCharName.data(), this->newCharName.size(), newCharName);
         }
     };
     #pragma pack(pop)

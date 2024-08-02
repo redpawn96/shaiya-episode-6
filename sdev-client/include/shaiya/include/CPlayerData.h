@@ -129,8 +129,9 @@ namespace shaiya
         ULONG charId;                       //0x90E2F4  0x1124
         Inventory inventory;                //0x90E2F8  0x1128
         Array<CItem, 256> bag250;           //0x910038  0x2E68
-        // 0x913438  0x6268
-        PAD(48);
+        Array<UINT16, 21> weaponStep;       //0x913438  0x6268
+        PAD(2);
+        TargetType targetType;              //0x913460  0x6294
         Country country;                    //0x913468  0x6298
         Grow grow;                          //0x913469  0x6299
         PAD(6);

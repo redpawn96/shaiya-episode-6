@@ -125,13 +125,22 @@ void Synergy::applySynergies(CUser* user, CItem* item, bool removeFlag)
         user->abilityMagicPower += effect.magicPower;
 
         if (effect.reaction)
+        {
             user->maxHealth += effect.reaction * 5;
+            CUser::SendMaxHP(user);
+        }
 
         if (effect.wisdom)
+        {
             user->maxMana += effect.wisdom * 5;
+            CUser::SendMaxMP(user);
+        }
 
         if (effect.dexterity)
+        {
             user->maxStamina += effect.dexterity * 5;
+            CUser::SendMaxSP(user);
+        }
     }
 
     g_appliedSynergies.insert_or_assign(user->id, effects);
@@ -159,13 +168,22 @@ void Synergy::removeSynergies(CUser* user)
         user->abilityMagicPower -= effect.magicPower;
 
         if (effect.reaction)
+        {
             user->maxHealth -= effect.reaction * 5;
+            CUser::SendMaxHP(user);
+        }
 
         if (effect.wisdom)
+        {
             user->maxMana -= effect.wisdom * 5;
+            CUser::SendMaxMP(user);
+        }
 
         if (effect.dexterity)
+        {
             user->maxStamina -= effect.dexterity * 5;
+            CUser::SendMaxSP(user);
+        }
     }
 
     g_appliedSynergies.erase(user->id);
